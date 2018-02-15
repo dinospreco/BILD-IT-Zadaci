@@ -43,7 +43,11 @@ public class LargestCommonPrefix {
 
     public static String commonPrefix(String str1, String str2) {
         String prefix = "";
-        for (int i = 0 ; i < str1.length() ; i++) {
+        int lenght = str1.length();
+        if (lenght > str2.length()) {
+            lenght = str2.length();
+        }
+        for (int i = 0 ; i < lenght ; i++) {
             if (str1.charAt(i) == str2.charAt(i)) {
                 prefix = prefix + str1.charAt(i);
             }
