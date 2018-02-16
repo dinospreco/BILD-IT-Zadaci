@@ -21,15 +21,24 @@ import java.util.Scanner;
 public class LeapYears {
 
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
         int upperLimit = 0;
         int lowerLimit = 0;
         int printCount = 0;
 
         System.out.print("Enter lower limit:");
-        lowerLimit = input.nextInt();
+        lowerLimit = inputPositiveInteger();
         System.out.print("Enter upper limit:");
-        upperLimit = input.nextInt();
+        upperLimit = inputPositiveInteger();
+
+        if (lowerLimit > upperLimit) {
+            System.out.println("Lower limit must be less than upper limit. No worries, we got your back.");
+            int tmp = lowerLimit;
+            lowerLimit = upperLimit;
+            upperLimit = tmp;
+        }
+
+        System.out.println();
+        System.out.println("Leap Years from year " + lowerLimit + " to year " + upperLimit + " are: ");
 
         for (int i = lowerLimit ; i <= upperLimit ; i++) {
             if(isLeapYear(i)) {
@@ -41,6 +50,33 @@ public class LeapYears {
             }
         }
 
+    }
+
+    public static int inputPositiveInteger() {
+        Scanner input = new Scanner(System.in);
+        int positiveInt = -1;
+
+        while (input.hasNext()) {
+
+            if (input.hasNextInt()) {
+                positiveInt = input.nextInt();
+            }
+            else {
+                System.out.print("Year must be positive integer, try again: ");
+                input.next();
+                continue;
+            }
+
+            if (positiveInt < 0) {
+                System.out.print("Year must be positive integer, try again: ");
+                continue;
+            }
+            else {
+                return positiveInt;
+            }
+        }
+
+        return positiveInt;
     }
 
     public static boolean isLeapYear(int year) {
