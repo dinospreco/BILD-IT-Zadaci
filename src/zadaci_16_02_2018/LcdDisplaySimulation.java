@@ -1,5 +1,19 @@
 package zadaci_16_02_2018;
 
+/*
+ * BILD-IT Zadaci 16.02.2018.
+ *
+ * Zadatak 2: Napisati program koji simulira LCD display za prikaz brojeva.
+ *
+ *            Za svaku horizontalnu liniju koristiti "-" a za svaku vertikalnu " | "
+ *
+ *            Korisnik ili programer (trazite unos ili specificirate u kodu) moze mijenjati velicinu brojeva od 2 do 5
+ *            sto znaci da za velicinu 2 program ce koristiti po dva karaktera za svaki dio broja.
+ *
+ * @author: Dino Spreco
+ * @date: 17.02.2018.
+ */
+
 import java.util.Scanner;
 
 public class LcdDisplaySimulation {
@@ -10,7 +24,7 @@ public class LcdDisplaySimulation {
         System.out.print("Enter an integer for LCD representation: ");
         number = zadaci_15_02_2018.Palindrome.inputInteger();
 
-        printSegments(numberToLcd(number,5));
+        printSegments(numberToLcd(number,3));
     }
 
     // This method maps states for led diodes inside one 7 segments LCD
@@ -139,7 +153,7 @@ public class LcdDisplaySimulation {
         return segmentStates;
     }
 
-    // This method generates array of string for each segment, each string representing one line.
+    // This method generates array of strings for each segment, each string representing one line.
     public static String[] drawSegment(int oneDigitNumber, int size) {
         boolean[] segmetStates = segmentTranslation(oneDigitNumber);
         String[] lcdNumber = new String[size + size + 3];
@@ -240,17 +254,24 @@ public class LcdDisplaySimulation {
         return lcdNumber;
     }
 
-    // Method prints one segment(s)
+    // Method prints segment(s)
     public static void printSegments(String[] segments) {
         for (int i = 0 ; i < segments.length ; i++) {
             System.out.println(segments[i]);
         }
     }
 
+    // This method translates combines multiple digits into one display.
     public static String[] numberToLcd(int number, int size) {
         String[] lcdDisplay = new String[size + size + 3];
         int reversedNumber = 0;
         int numberOfDigits = 0;
+        boolean wasNegativeNumber = false;
+
+        if (number < 0) {
+            wasNegativeNumber = true;
+            number = number * -1;
+        }
 
         //reversing the number
         while (number > 0) {
@@ -262,8 +283,36 @@ public class LcdDisplaySimulation {
         reversedNumber = reversedNumber / 10;
 
         //Drawing lcd
-        for (int i = 0 ; i < lcdDisplay.length ; i++) {
-            lcdDisplay[i] = "";
+        if (wasNegativeNumber) {
+            String generatedMinus = "";
+            String generatedSpaces = "";
+
+            for (int i = 0 ; i < size ; i++) {
+                generatedMinus = generatedMinus + "-";
+                generatedSpaces = generatedSpaces + " ";
+            }
+
+            lcdDisplay[0] = generatedSpaces;
+
+            for (int i = 1 ; i <= size ; i++) {
+                lcdDisplay[i] = generatedSpaces;
+            }
+
+            lcdDisplay[size + 1] = generatedMinus;
+
+            for (int i = 0 ; i < size ; i++) {
+                lcdDisplay[i+size+2] = generatedSpaces;
+            }
+            lcdDisplay[size+size+2] = generatedSpaces;
+
+            for (int i = 0 ; i < lcdDisplay.length ; i++) {
+                lcdDisplay[i] = lcdDisplay[i] + " ";
+            }
+        }
+        else {
+            for (int i = 0 ; i < lcdDisplay.length ; i++) {
+                lcdDisplay[i] = "";
+            }
         }
 
         for (int i = 0 ; i < numberOfDigits ; i++) {
